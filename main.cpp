@@ -3,9 +3,7 @@ Sistema de gestión de inventario simple para sus productos más vendidos.
 El sistema debe ser capaz de almacenar, gestionar y consultar información clave sobre un número fijo de artículos.
 Debido a las limitaciones de hardware y la necesidad de un rendimiento predecible sin sobrecarga de memoria dinámica, se ha decidido utilizar arreglos paralelos.
 
-Requisitos Funcionales
-
-
+Requisitos Funcionales:
     Consulta de Productos: El usuario podrá ingresar un código de producto para ver toda la información asociada: nombre, cantidad en stock y precio. Si el producto no existe, se deberá mostrar un mensaje de error claro.
 
     Actualización de Inventario: El usuario podrá ingresar un código de producto y una cantidad para actualizar el stock. La cantidad puede ser positiva (sumar al stock) o negativa (restar del stock). No se permitirá que la cantidad en stock sea inferior a cero.
@@ -23,7 +21,11 @@ Requisitos Funcionales
 #include <string>
 
 void validacionInt(int numero);
+void consulta(int cod[], std::string nom[], int stk[], float pre[],int codi);
+void actualizar(int cod[], std::string nom[], int stk[], float pre[],int codi);
+//bool Vexiste(int cod[], std::string nom[], int stk[], float pre[]);
 void reporte(int cod[], std::string nom[], int stk[], float pre[]);
+//void caro(int cod[], std::string nom[], int stk[], float pre[]);
 
 int main(){
 //Código de Producto: Un número entero único que identifica al producto.
@@ -39,7 +41,9 @@ int main(){
   float precio[100]{100,5.5,500,20.5,20};
   
   bool dale = true;
+  bool existe;
   int opcion;
+  int codi;
   do{
     std::cout << "Escoja su accion:" << std::endl;
     std::cout << "1:  Consultar un producto" << std::endl;
@@ -47,27 +51,135 @@ int main(){
     std::cout << "3:  Generar reporte completo" << std::endl;
     std::cout << "4:  Encontrar el producto mas caro" << std::endl;
     std::cout << "0:  Salir" << std::endl;
-    std::cin >> opcion;
-    switch(opcion){
-      case 1:
-        std::cout << "Opcion 1:" << std::endl;
-        
-      break;
-      case 0:
-        dale = false;
-      break;
-    }
+    std::cin>>opcion;
+          switch(opcion){
+            case 1:
+              std::cout << "Ingrese el codigo de el numero que desea consultar:" << std::endl;
+              std::cin>>codi;
+              if(std::cin.fail()){
+                std::cout<<"Opcion invalida, volver a  ingresar"<<std::endl;
+                std::cin.clear();
+                std::cin.ignore(1024, '\n');}
+              else{
+                consulta(codigo,nombre,stock,precio,codi);
+              }    
+            break;
+            case 2:
+              std::cout << "Ingrese el codigo de el numero que desea actualizar:" << std::endl;
+              std::cin>>codi;
+              if(std::cin.fail()){
+                std::cout<<"Opcion invalida, volver a  ingresar"<<std::endl;
+                std::cin.clear();
+                std::cin.ignore(1024, '\n');}
+              else{
+                actualizar(codigo,nombre,stock,precio,codi);
+              }
+            break;
+            case 3:
+              reporte(codigo,nombre,stock,precio);
+            break;
+            case 4:
+              std::cout << "Opcion 4:" << std::endl;
+            break;
+            case 0:
+              dale = false;
+            break;
+            }
   }while(dale);
   
-  reporte(codigo,nombre,stock,precio);
+
   validacionInt(28);
 }
-void reporte(int cod[], std::string nom[], int stk[], float pre[]){
+
+//2nda opcion
+void actualizar(int cod[], std::string nom[], int stk[], float pre[], int codi){
+ bool existe = false;
+ int op;
+ int cuanto;
   for (int i = 0; i<100;i++){
-    if(cod[i])
-    std::cout << "aca anda el array" << cod[i];
+    if (cod[i] == codi){
+      std::cout << "Desea reportar ventas o restocking? :" << std::endl;
+      std::cout << "1 ventas:" << std::endl;
+      std::cout << "2 restock :" << std::endl;
+      std::cin >> op;
+      //opcion para checar si es mas o menos
+      if(std::cin.fail()){
+                std::cout<<"Opcion invalida, volver a  ingresar"<<std::endl;
+                std::cin.clear();
+                std::cin.ignore(1024, '\n');}
+              else{
+                //validacion de cuanto va a ser
+                std::cout << "Cuanto fue la diferencia?:" << std::endl;
+                std::cin >> cuanto;
+                if(std::cin.fail()){
+                  std::cout<<"Opcion invalida, volver a  ingresar"<<std::endl;
+                  std::cin.clear();
+                  std::cin.ignore(1024, '\n');}
+                else{
+                  switch (op){
+                    case 1:
+                      stk[i]=stk[i]-cuanto;
+                    break;
+                    case 2:
+                      stk[i]=stk[i]+cuanto;
+                    break;
+                    default:
+                      std::cout<<"Opcion invalida, volver a  ingresar";
+                    break;
+                  }
+              }  
+                
+              }  
+      existe = true;
+    }
   }
+  if(!existe){
+      std::cout << "Codigo inexistente"<< std::endl;
+    }
+}
+// 1ra opcion
+
+void consulta(int cod[], std::string nom[], int stk[], float pre[], int codi){
+ bool existe = false;
+  for (int i = 0; i<100;i++){
+    if (cod[i] == codi){
+      std::cout << "Codigo :" << cod[i] << std::endl;
+      std::cout << "Nombre :" << nom[i] << std::endl;
+      std::cout << "Stock :" << stk[i] << std::endl;
+      std::cout << "Precio :" << pre[i] << std::endl;
+      existe = true;
+    }
+  }
+  if(!existe){
+      std::cout << "Codigo inexistente"<< std::endl;
+    }
+}
+
+//en proceso
+/*bool Vexiste(int cod[], std::string nom[], int stk[], float pre[]){
+bool existe;
+  for (int i = 0; i<100;i++){
+    if(cod[i]){
+      existe = true; 
+    }
+  }
+  return existe;
+}*/
+
+//3ra opcion
+void reporte(int cod[], std::string nom[], int stk[], float pre[]){
+bool existe;
+  for (int i = 0; i<100;i++){
+    if(cod[i]){
+      std::cout << "Codigo :" << cod[i] << std::endl;
+      std::cout << "Nombre :" << nom[i] << std::endl;
+      std::cout << "Stock :" << stk[i] << std::endl;
+      std::cout << "Precio :" << pre[i] << std::endl;
+      std::cout << "-----------------------------------" << std::endl;
+    }
+}
 }
 void validacionInt(int numero){
   std::cout << "no valida" << numero;
 }
+
