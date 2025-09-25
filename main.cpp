@@ -25,7 +25,7 @@ void consulta(int cod[], std::string nom[], int stk[], float pre[],int codi);
 void actualizar(int cod[], std::string nom[], int stk[], float pre[],int codi);
 //bool Vexiste(int cod[], std::string nom[], int stk[], float pre[]);
 void reporte(int cod[], std::string nom[], int stk[], float pre[]);
-//void caro(int cod[], std::string nom[], int stk[], float pre[]);
+void caro(int cod[], std::string nom[], int stk[], float pre[]);
 
 int main(){
 //Código de Producto: Un número entero único que identifica al producto.
@@ -79,16 +79,14 @@ int main(){
               reporte(codigo,nombre,stock,precio);
             break;
             case 4:
-              std::cout << "Opcion 4:" << std::endl;
+              caro(codigo,nombre,stock,precio);
             break;
             case 0:
               dale = false;
             break;
             }
   }while(dale);
-  
 
-  validacionInt(28);
 }
 
 //2nda opcion
@@ -126,6 +124,11 @@ void actualizar(int cod[], std::string nom[], int stk[], float pre[], int codi){
                     default:
                       std::cout<<"Opcion invalida, volver a  ingresar";
                     break;
+                  }
+                  if(stk[i]<0){
+                    stk[i] = 0;
+                    std::cout<<"Sin stock"<<std::endl;
+                    
                   }
               }  
                 
@@ -179,6 +182,22 @@ bool existe;
     }
 }
 }
+void caro(int cod[], std::string nom[], int stk[], float pre[]){
+  int mayor = 0;
+  for (int i = 0; i<100;i++){
+    if(pre[i]>=mayor)
+      mayor=pre[i];
+  }
+  for (int i = 0; i<100;i++){
+    if(pre[i]==mayor){
+      std::cout << "Codigo :" << cod[i] << std::endl;
+      std::cout << "Nombre :" << nom[i] << std::endl;
+      std::cout << "Stock :" << stk[i] << std::endl;
+      std::cout << "Precio :" << pre[i] << std::endl;
+    }
+}
+}
+
 void validacionInt(int numero){
   std::cout << "no valida" << numero;
 }
