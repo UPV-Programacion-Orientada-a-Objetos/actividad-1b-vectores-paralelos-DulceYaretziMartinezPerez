@@ -131,7 +131,7 @@ void actualizar(int cod[], std::string nom[], int stk[], float pre[], int codi){
                     
                   }
               }  
-                
+                //hola
               }  
       existe = true;
     }
